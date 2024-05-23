@@ -33,6 +33,7 @@ func Run(file, subject string, time int, multiplier float64) error {
 
 	data := [][]string{}
 	if !fileExists(file) {
+		fmt.Println("File does not exist")
 		header := []string{"subject", "time spent", "comfortability", "total"}
 		data = append(data, header)
 	}
@@ -67,12 +68,9 @@ func WriteCSV(file io.Writer, data [][]string) error {
 }
 
 func fileExists(filepath string) bool {
-	_, err := os.Stat(filepath)
-	if err != nil {
-		return true
+	info,_ := os.Stat(filepath)
+	if info.Size() == 0 {
+		return false 
 	}
-	if os.IsNotExist(err) {
-		return false
-	}
-	return false
+	return true 
 }
